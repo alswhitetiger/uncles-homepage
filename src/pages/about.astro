@@ -1,0 +1,58 @@
+---
+import Base from '../layouts/Base.astro';
+import { company, team, url } from '../data/site';
+---
+<Base title="About" description="Vision, mission and team of KNS Uncles, a Middle East business development partner for Korean beauty and healthcare.">
+  <section class="section">
+    <div class="wrap">
+      <h1>About KNS Uncles</h1>
+      <p class="lede">{company.vision}</p>
+    </div>
+  </section>
+
+  <section class="section tint">
+    <div class="wrap">
+      <h2>Mission</h2>
+      <div class="grid">
+        <p>Connect global buyers directly with Korean partners they can trust, through transparent sourcing and efficient export support.</p>
+        <p>Work with Korean research institutes, manufacturers and technology partners to find and develop technology-based beauty and healthcare products.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>Why companies work with us</h2>
+      <div class="grid">
+        <div>
+          <h3>A Middle East specialist team</h3>
+          <p>Experience across technology transfer, export and regulatory approval.</p>
+        </div>
+        <div>
+          <h3>Real-world evidence</h3>
+          <p>A working network of partners in Korea and abroad.</p>
+        </div>
+        <div>
+          <h3>AI data and content</h3>
+          <p>Market data and content built with AI tools to support each launch.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section tint">
+    <div class="wrap">
+      <h2>Team</h2>
+      <p>More than 13 years of taking Korean products and technology abroad, with backgrounds at KPMG, Dong-A ST, Samsung Bioepis, Yeolmae Company and Chungbuk National University.</p>
+      <div class="grid">
+        {team.map((m) => (
+          <div class="person">
+            <img src={url('images/placeholder.svg')} width="800" height="600" alt={`Placeholder: portrait of ${m.name}`} loading="lazy" />
+            <h3>{m.name}</h3>
+            <p class="muted">{m.role}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>

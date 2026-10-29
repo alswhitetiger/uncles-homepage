@@ -1,0 +1,25 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { url } from '../../data/site';
+
+const posts = (await getCollection('insights')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const fmt = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base title="Insights" description="Notes on Middle East markets for Korean beauty and healthcare: regulation, distribution and buyer demand.">
+  <section class="section">
+    <div class="wrap">
+      <h1>Insights</h1>
+      <p class="lede">Notes on Middle East markets for Korean beauty and healthcare companies.</p>
+      <ul class="post-list">
+        {posts.map((post) => (
+          <li>
+            <h2><a href={url(`/insights/${post.id}/`)}>{post.data.title}</a>{post.data.sample && <span class="badge">Sample</span>}</h2>
+            <p class="meta"><time datetime={post.data.pubDate.toISOString()}>{fmt(post.data.pubDate)}</time>{post.data.market && `, ${post.data.market}`}</p>
+            <p>{post.data.description}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>

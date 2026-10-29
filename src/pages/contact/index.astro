@@ -1,0 +1,61 @@
+---
+import Base from '../../layouts/Base.astro';
+import { company } from '../../data/site';
+---
+<Base title="Contact" description="Contact KNS Uncles about Middle East market entry, distribution or sourcing Korean beauty and healthcare products.">
+  <section class="section">
+    <div class="wrap">
+      <h1>Contact us</h1>
+      <p class="lede">Tell us about your product or sourcing need. You can also email <a href={`mailto:${company.email}`}>{company.email}</a> or call <a href={company.phoneHref}>{company.phone}</a>.</p>
+
+      <!-- shortcut: GitHub Pages can't receive form posts, so the form opens the visitor's email app; switch to a form service (e.g. Formspree) for in-page sending. -->
+      <form class="form" id="contact-form" action={`mailto:${company.email}`} data-email={company.email}>
+
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" autocomplete="name" required />
+        </div>
+        <div class="field">
+          <label for="email">Work email</label>
+          <input id="email" name="email" type="email" autocomplete="email" required />
+        </div>
+        <div class="field">
+          <label for="company">Company</label>
+          <input id="company" name="company" type="text" autocomplete="organization" required />
+        </div>
+        <div class="field">
+          <label for="country">Country</label>
+          <input id="country" name="country" type="text" autocomplete="country-name" />
+        </div>
+        <div class="field">
+          <label for="topic">What do you need?</label>
+          <select id="topic" name="topic" required>
+            <option value="">Choose one</option>
+            <option>Market entry</option>
+            <option>Partnership &amp; deal structuring</option>
+            <option>Execution</option>
+            <option>Procurement / sourcing</option>
+            <option>Something else</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="message">Message</label>
+          <span class="hint" id="message-hint">Product, target country and timeline help us reply with specifics.</span>
+          <textarea id="message" name="message" aria-describedby="message-hint" required></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit">Write the email</button>
+        <p class="hint">This opens your email app with your message filled in, ready to send to {company.email}.</p>
+      </form>
+      <script>
+        const form = document.getElementById('contact-form') as HTMLFormElement;
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const d = new FormData(form);
+          const subject = `${d.get('topic')}: ${d.get('company')}`;
+          const body = `${d.get('message')}\n\n${d.get('name')}\n${d.get('company')}${d.get('country') ? `, ${d.get('country')}` : ''}\n${d.get('email')}`;
+          window.location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        });
+      </script>
+    </div>
+  </section>
+</Base>

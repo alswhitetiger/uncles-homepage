@@ -1,0 +1,59 @@
+---
+import '../styles/global.css';
+import { company, nav, url } from '../data/site';
+
+interface Props { title: string; description: string; noindex?: boolean; overlayHeader?: boolean }
+const { title, description, noindex = false, overlayHeader = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const fullTitle = title === company.name ? company.name : `${title} | ${company.name}`;
+const path = Astro.url.pathname;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href={url('favicon.svg')} type="image/svg+xml" />
+    <link rel="sitemap" href={url('sitemap-index.xml')} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class:list={['site-header', { overlay: overlayHeader }]}>
+      <div class="wrap header-inner">
+        <a class="brand" href={url('/')}>{company.name}</a>
+        <nav aria-label="Main">
+          <ul>
+            {nav.map((item) => (
+              <li><a href={url(item.href)} aria-current={path.startsWith(url(item.href)) ? 'page' : undefined}>{item.label}</a></li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <p class="brand">{company.name}</p>
+        <ul class="footer-links">
+          <li><a href={`mailto:${company.email}`}>{company.email}</a></li>
+          <li><a href={company.phoneHref}>{company.phone}</a></li>
+          {company.social.map((s) => <li><a href={s.href}>{s.label}</a></li>)}
+        </ul>
+        <p class="fine">&copy; {new Date().getFullYear()} {company.name}</p>
+      </div>
+    </footer>
+  </body>
+</html>

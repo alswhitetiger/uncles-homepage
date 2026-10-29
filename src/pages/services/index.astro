@@ -1,0 +1,21 @@
+---
+import Base from '../../layouts/Base.astro';
+import { services, url } from '../../data/site';
+---
+<Base title="Services" description="Market entry, deal structuring, execution and procurement for Korean beauty and healthcare in the Middle East.">
+  <section class="section">
+    <div class="wrap">
+      <h1>Services</h1>
+      <p class="lede">From the first market check to running supply, we cover each stage of a Korea to Middle East business.</p>
+      <div class="grid">
+        {services.map((s) => (
+          <article class="service">
+            <h2><a href={url(`/services/${s.slug}/`)}>{s.title}</a></h2>
+            <p>{s.summary}</p>
+            <ul class="ticks">{s.points.map((p) => <li>{p}</li>)}</ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+import { partners } from '../data/site';
+---
+<Base title="Partners" description="Pharmaceutical, medical and cosmetics companies KNS Uncles works with in Korea and the Middle East.">
+  <section class="section">
+    <div class="wrap">
+      <h1>Partners</h1>
+      <p class="lede">Manufacturers, pharmaceutical companies and distributors we work with in Korea and the Middle East.</p>
+      <h2>Partner companies</h2>
+      <ul class="partner-list">
+        {partners.map((p) => <li>{p}</li>)}
+      </ul>
+    </div>
+  </section>
+</Base>

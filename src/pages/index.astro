@@ -1,0 +1,91 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { company, services, partners, url } from '../data/site';
+import trio from '../assets/photos/realdew-trio.jpg';
+import serumCream from '../assets/photos/realdew-serum-cream.jpg';
+import boxes from '../assets/photos/realdew-boxes.jpg';
+const steps = services.filter((s) => !s.sequence);
+const procurement = services.find((s) => s.sequence)!;
+---
+<Base title={company.name} overlayHeader description="KNS Uncles helps Korean beauty and healthcare companies enter GCC, Levant and North African markets, from market fit to signed distribution.">
+  <section class="photo hero" aria-labelledby="hero-title">
+    <Image src={trio} alt="" widths={[800, 1400, 2000]} sizes="100vw" loading="eager" fetchpriority="high" style="object-position: 50% 62%;" />
+    <div class="hero-inner">
+      <span class="eyebrow">Korean beauty &amp; healthcare for the Middle East</span>
+      <h1 id="hero-title">Korean beauty,<br /><em>carried further.</em></h1>
+    </div>
+    <div class="hero-foot">
+      <span>Korea to the GCC, Levant &amp; North Africa</span>
+      <a href="#approach">Our approach</a>
+    </div>
+  </section>
+
+  <section class="section center" id="approach">
+    <div class="wrap">
+      <span class="eyebrow">Who we are</span>
+      <h2>We connect Korean makers<br />with <em>buyers who trust them.</em></h2>
+      <hr class="rule" />
+      <p class="lede">KNS Uncles is a business development partner for Korean beauty and healthcare companies. We give Middle East buyers direct access to Korean partners, with transparent sourcing and export support from the first inquiry to the first shipment.</p>
+    </div>
+  </section>
+
+  <section class="split">
+    <div class="photo light">
+      <Image src={serumCream} alt="Real Dew serum, cream and cleanser, a Korean skincare line" widths={[600, 1000, 1400]} sizes="(min-width: 52rem) 50vw, 100vw" />
+    </div>
+    <div class="split-text">
+      <span class="eyebrow">What it takes</span>
+      <h2>Understand the market.<br />Design the structure.<br />Commercialise.</h2>
+      <hr class="rule" />
+      <p class="muted">We check whether a product can realistically enter the target country before money is spent, choose the partners and commercial model that keep it sustainable, and manage registration and approvals through to the first orders.</p>
+    </div>
+  </section>
+
+  <section class="section quote-band center">
+    <div class="wrap">
+      <span class="eyebrow">Our view</span>
+      <blockquote>
+        <p>&ldquo;Good products alone don't open the Middle East. <em>Knowing the market does.</em>&rdquo;</p>
+      </blockquote>
+      <hr class="rule" />
+      <cite>The KNS Uncles approach</cite>
+    </div>
+  </section>
+
+  <section class="section center">
+    <div class="wrap">
+      <span class="eyebrow">How we work</span>
+      <h2>From market fit to signed deals</h2>
+      <ol class="columns">
+        {steps.map((s, i) => (
+          <li>
+            <span class="num">0{i + 1} /</span>
+            <h3><a href={url(`/services/${s.slug}/`)}>{s.title}</a></h3>
+            <p>{s.summary}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="muted" style="margin-top: 3rem;">For Middle East pharmaceutical companies we also run a <a href={url(`/services/${procurement.slug}/`)}>procurement service</a>, acting as their liaison office in Korea.</p>
+    </div>
+  </section>
+
+  <section class="photo banner" aria-labelledby="lines-title">
+    <Image src={boxes} alt="" widths={[800, 1400, 2000]} sizes="100vw" style="object-position: 50% 55%;" />
+    <div class="wrap">
+      <h2 id="lines-title">Cosmetics and medical.<br /><em>One corridor.</em></h2>
+    </div>
+  </section>
+
+  <section class="section center cta-band">
+    <div class="wrap">
+      <span class="eyebrow">Partners in the region</span>
+      <h2>Working alongside <em>trusted names.</em></h2>
+      <p class="partner-line">{partners.join(' / ')}</p>
+      <div class="actions">
+        <a class="btn btn-primary" href={url('/contact/')}>Discuss a project</a>
+        <a class="btn btn-secondary" href={url('/services/')}>See our services</a>
+      </div>
+    </div>
+  </section>
+</Base>
