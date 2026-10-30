@@ -1,91 +1,146 @@
 ---
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import { company, services, partners, url } from '../data/site';
-import trio from '../assets/photos/realdew-trio.jpg';
+import { company, services, partners, team, url } from '../data/site';
 import serumCream from '../assets/photos/realdew-serum-cream.jpg';
 import boxes from '../assets/photos/realdew-boxes.jpg';
-const steps = services.filter((s) => !s.sequence);
-const procurement = services.find((s) => s.sequence)!;
+import trio from '../assets/photos/realdew-trio.jpg';
+import binoculars from '../assets/photos/atmos-binoculars.jpg';
+import typewriter from '../assets/photos/atmos-typewriter.jpg';
+
+const procurement = services.find((s) => s.slug === 'procurement')!;
+const lines = [
+  { tab: 'Cosmetics', title: 'Korean skincare for Gulf shelves', text: 'Cleansers, creams and serums from Korean makers, placed with distributors and retailers who will invest in them. Example: Barr Cosmetics Rice Barrier Gel Cleanser.', href: '/services/market-entry/' },
+  { tab: 'Medical', title: 'Medical products with partners', text: 'Medical and pharmaceutical products from Korean manufacturers and research partners, through distribution, OEM or joint development. Example: BTS Medical BellKrea.', href: '/services/deal-structuring/' },
+  { tab: 'Procurement', title: 'Your liaison office in Korea', text: `For Middle East pharmaceutical companies sourcing Korean medicines: ${procurement.points.join(', ').toLowerCase()}.`, href: '/services/procurement/' },
+];
+const poster = [
+  { word: 'Market entry', fact: 'Fit, partners, strategy', href: '/services/market-entry/' },
+  { word: 'Deals', fact: 'Exclusive, distribution, licensing', href: '/services/deal-structuring/' },
+  { word: 'Execution', fact: 'Supply chain, contracts, payments', href: '/services/execution/' },
+  { word: 'Procurement', fact: 'Korean medicines, sourced', href: '/services/procurement/' },
+];
+const wordmark = 'KNS UNCLES'.split('');
 ---
-<Base title={company.name} overlayHeader description="KNS Uncles helps Korean beauty and healthcare companies enter GCC, Levant and North African markets, from market fit to signed distribution.">
-  <section class="photo hero" aria-labelledby="hero-title">
-    <Image src={trio} alt="" widths={[800, 1400, 2000]} sizes="100vw" loading="eager" fetchpriority="high" style="object-position: 50% 62%;" />
-    <div class="hero-inner">
-      <span class="eyebrow">Korean beauty &amp; healthcare for the Middle East</span>
-      <h1 id="hero-title">Korean beauty,<br /><em>carried further.</em></h1>
-    </div>
-    <div class="hero-foot">
-      <span>Korea to the GCC, Levant &amp; North Africa</span>
-      <a href="#approach">Our approach</a>
-    </div>
+<Base title={company.name} overlayHeader description="KNS Uncles takes Korean beauty and healthcare brands to buyers in the GCC, the Levant and North Africa.">
+  <section class="hero" data-field="paper" aria-labelledby="hero-title">
+    <h1 id="hero-title" class="hero-title">
+      <span class="seam-copy upper">Korea<br />Middle East</span>
+      <span class="seam-copy lower" aria-hidden="true">Korea<br />Middle East</span>
+    </h1>
+    <p class="hero-sub">We take Korean beauty and healthcare brands to buyers in the GCC, the Levant and North Africa.</p>
   </section>
 
-  <section class="section center" id="approach">
-    <div class="wrap">
-      <span class="eyebrow">Who we are</span>
-      <h2>We connect Korean makers<br />with <em>buyers who trust them.</em></h2>
-      <hr class="rule" />
-      <p class="lede">KNS Uncles is a business development partner for Korean beauty and healthcare companies. We give Middle East buyers direct access to Korean partners, with transparent sourcing and export support from the first inquiry to the first shipment.</p>
-    </div>
+  <section class="chapter field-red intro" data-field="red" aria-labelledby="intro-title">
+    <h2 id="intro-title" class="intro-title">Lab to shelf.</h2>
+    <Image class="chip" src={serumCream} alt="Korean camellia serum and cream" widths={[300, 600]} sizes="(min-width: 48rem) 12vw, 30vw" />
+    <p class="statement">We check the market, find the partner, write the deal and stay until your Korean product is on a Middle East shelf.</p>
   </section>
 
-  <section class="split">
-    <div class="photo light">
-      <Image src={serumCream} alt="Real Dew serum, cream and cleanser, a Korean skincare line" widths={[600, 1000, 1400]} sizes="(min-width: 52rem) 50vw, 100vw" />
+  <section class="chapter field-blue showcase" data-field="blue" aria-labelledby="lines-title">
+    <div class="plate">
+      <Image src={boxes} alt="Korean skincare boxes in red packaging" widths={[600, 1000, 1400]} sizes="(min-width: 60rem) 46vw, 100vw" />
     </div>
-    <div class="split-text">
-      <span class="eyebrow">What it takes</span>
-      <h2>Understand the market.<br />Design the structure.<br />Commercialise.</h2>
-      <hr class="rule" />
-      <p class="muted">We check whether a product can realistically enter the target country before money is spent, choose the partners and commercial model that keep it sustainable, and manage registration and approvals through to the first orders.</p>
-    </div>
-  </section>
-
-  <section class="section quote-band center">
-    <div class="wrap">
-      <span class="eyebrow">Our view</span>
-      <blockquote>
-        <p>&ldquo;Good products alone don't open the Middle East. <em>Knowing the market does.</em>&rdquo;</p>
-      </blockquote>
-      <hr class="rule" />
-      <cite>The KNS Uncles approach</cite>
-    </div>
-  </section>
-
-  <section class="section center">
-    <div class="wrap">
-      <span class="eyebrow">How we work</span>
-      <h2>From market fit to signed deals</h2>
-      <ol class="columns">
-        {steps.map((s, i) => (
-          <li>
-            <span class="num">0{i + 1} /</span>
-            <h3><a href={url(`/services/${s.slug}/`)}>{s.title}</a></h3>
-            <p>{s.summary}</p>
-          </li>
-        ))}
-      </ol>
-      <p class="muted" style="margin-top: 3rem;">For Middle East pharmaceutical companies we also run a <a href={url(`/services/${procurement.slug}/`)}>procurement service</a>, acting as their liaison office in Korea.</p>
-    </div>
-  </section>
-
-  <section class="photo banner" aria-labelledby="lines-title">
-    <Image src={boxes} alt="" widths={[800, 1400, 2000]} sizes="100vw" style="object-position: 50% 55%;" />
-    <div class="wrap">
-      <h2 id="lines-title">Cosmetics and medical.<br /><em>One corridor.</em></h2>
-    </div>
-  </section>
-
-  <section class="section center cta-band">
-    <div class="wrap">
-      <span class="eyebrow">Partners in the region</span>
-      <h2>Working alongside <em>trusted names.</em></h2>
-      <p class="partner-line">{partners.join(' / ')}</p>
-      <div class="actions">
-        <a class="btn btn-primary" href={url('/contact/')}>Discuss a project</a>
-        <a class="btn btn-secondary" href={url('/services/')}>See our services</a>
+    <div class="plate-text" data-tabs>
+      <h2 id="lines-title" class="visually-hidden">What we carry</h2>
+      <div class="tabs" role="tablist" aria-label="Business lines">
+        {lines.map((l, i) => <button type="button" role="tab" id={`tab-${i}`} aria-controls={`panel-${i}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{l.tab}</button>)}
       </div>
+      {lines.map((l, i) => (
+        <div class="panel" role="tabpanel" id={`panel-${i}`} aria-labelledby={`tab-${i}`} hidden={i !== 0}>
+          <h3>{l.title}</h3>
+          <p>{l.text}</p>
+          <div class="cells">
+            <a class="cell cell-ink" href={url('/contact/')}>Discuss a project</a>
+            <a class="cell cell-tone" href={url(l.href)}>How it works</a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="chapter field-ground growth" data-field="ground" aria-labelledby="growth-title">
+    <h2 id="growth-title">How it grows</h2>
+    <ol class="tiles">
+      <li>
+        <div class="tile tile-gold"><Image src={binoculars} alt="Viewing binoculars facing the sea" widths={[400, 800]} sizes="25vw" /></div>
+        <h3>Checked</h3>
+        <p>Can it sell there, at what price, under which rules.</p>
+      </li>
+      <li>
+        <div class="tile tile-teal"><Image src={typewriter} alt="A typewriter with a blank sheet" widths={[500, 900]} sizes="33vw" /></div>
+        <h3>Signed</h3>
+        <p>A distributor who invests, and a deal that lasts.</p>
+      </li>
+      <li>
+        <div class="tile tile-red"><Image src={trio} alt="Korean cream, serum and cleanser" widths={[600, 1100]} sizes="42vw" /></div>
+        <h3>Shelved</h3>
+        <p>Approvals, shipments, first orders. Products we work with are on shelves in the UAE.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="chapter field-teal poster" data-field="teal" aria-labelledby="poster-title">
+    <h2 id="poster-title" class="visually-hidden">Services</h2>
+    <ul class="poster-list">
+      {poster.map((p) => <li><a href={url(p.href)}><span class="poster-word">{p.word}</span><span class="poster-fact">{p.fact}</span></a></li>)}
+    </ul>
+  </section>
+
+  <section class="chapter field-gold people" data-field="gold" aria-labelledby="people-title">
+    <h2 id="people-title">Who you'll work with</h2>
+    <ul class="people-tiles">
+      {team.map((m) => <li><span class="name">{m.name}</span><span class="role">{m.role}</span></li>)}
+    </ul>
+    <p class="people-note">Thirteen years of taking Korean products abroad, from KPMG, Dong-A ST, Samsung Bioepis, Yeolmae Company and Chungbuk National University. Partners include {partners.slice(0, 6).join(', ')} and {partners.length - 6} more.</p>
+  </section>
+
+  <section class="chapter field-ground contact" data-field="ground" aria-labelledby="contact-title">
+    <h2 id="contact-title" class="visually-hidden">Contact</h2>
+    <a class="row" href={`mailto:${company.email}`}>{company.email}</a>
+    <a class="row" href={company.phoneHref}>{company.phone}</a>
+    <p class="row">GCC, Levant, North Africa</p>
+    <p class="row greet">Say hello <a class="round" href={url('/contact/')} aria-label="Open the contact form"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" /></svg></a></p>
+  </section>
+
+  <section class="chapter field-red mark" data-field="red" aria-label={company.name}>
+    <div class="blocks" aria-hidden="true">
+      {wordmark.map((ch, i) => ch === ' ' ? <span class="gap"></span> : <span class={`block b${i % 4}`}>{ch}</span>)}
     </div>
   </section>
 </Base>
+
+<script>
+  // Colour by chapter: the header takes the colour of the field under it.
+  const header = document.querySelector<HTMLElement>('.site-header');
+  const fields = document.querySelectorAll<HTMLElement>('[data-field]');
+  if (header) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) header.dataset.field = (e.target as HTMLElement).dataset.field; });
+    }, { rootMargin: '0px 0px -92% 0px' });
+    fields.forEach((f) => io.observe(f));
+  }
+
+  // Business-line tabs (arrow keys move between them).
+  document.querySelectorAll<HTMLElement>('[data-tabs]').forEach((root) => {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role=tab]')];
+    const select = (i: number) => tabs.forEach((t, j) => {
+      t.setAttribute('aria-selected', String(i === j));
+      t.tabIndex = i === j ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')!)!.hidden = i !== j;
+    });
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(i));
+      t.addEventListener('keydown', (e) => {
+        const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (d) { const n = (i + d + tabs.length) % tabs.length; select(n); tabs[n].focus(); }
+      });
+    });
+  });
+
+  // Entrances: each chapter's parts rise in once, staggered.
+  const reveal = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); reveal.unobserve(e.target); } });
+  }, { rootMargin: '0px 0px -15% 0px' });
+  document.querySelectorAll('.chapter').forEach((f) => reveal.observe(f));
+</script>
