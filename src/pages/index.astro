@@ -1,91 +1,192 @@
 ---
 import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import { company, services, partners, url } from '../data/site';
-import trio from '../assets/photos/realdew-trio.jpg';
-import serumCream from '../assets/photos/realdew-serum-cream.jpg';
+import { company, services, partners, team, url } from '../data/site';
 import boxes from '../assets/photos/realdew-boxes.jpg';
-const steps = services.filter((s) => !s.sequence);
-const procurement = services.find((s) => s.sequence)!;
+import trio from '../assets/photos/realdew-trio.jpg';
+
+const svc = Object.fromEntries(services.map((s) => [s.slug, s]));
+const stops = [
+  { place: 'Market', q: 'Will anyone there want it?', a: 'Before money moves, we check market fit: the category, the price point and the rules of the target country.', service: 'market-entry' },
+  { place: 'Partner', q: 'Who will sell it for you?', a: 'We find local distribution partners who know the channel, and make sure they will invest in the brand.', service: 'market-entry' },
+  { place: 'Contract', q: 'What should the deal say?', a: 'Exclusive or not, distribution or licensing. We design the structure so it still works after the first order.', service: 'deal-structuring' },
+  { place: 'Route', q: 'Who keeps it moving?', a: 'Cross-border coordination, supply chain, partner management, contracts and payments, handled end to end.', service: 'execution' },
+];
+const posts = (await getCollection('insights')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()).slice(0, 2);
 ---
-<Base title={company.name} overlayHeader description="KNS Uncles helps Korean beauty and healthcare companies enter GCC, Levant and North African markets, from market fit to signed distribution.">
-  <section class="photo hero" aria-labelledby="hero-title">
-    <Image src={trio} alt="" widths={[800, 1400, 2000]} sizes="100vw" loading="eager" fetchpriority="high" style="object-position: 50% 62%;" />
-    <div class="hero-inner">
-      <span class="eyebrow">Korean beauty &amp; healthcare for the Middle East</span>
-      <h1 id="hero-title">Korean beauty,<br /><em>carried further.</em></h1>
+<Base title={company.name} overlayHeader description="How does a Korean product end up on a shelf in the Middle East? KNS Uncles takes Korean beauty and healthcare brands to the GCC, the Levant and North Africa.">
+  <section class="dark-room" aria-labelledby="hero-title">
+    <div class="stage" data-spotlight>
+      <Image src={boxes} alt="Korean skincare in red packaging, lit by a moving spotlight" widths={[800, 1400, 2000]} sizes="100vw" loading="eager" fetchpriority="high" />
+      <div class="veil" aria-hidden="true"></div>
     </div>
-    <div class="hero-foot">
-      <span>Korea to the GCC, Levant &amp; North Africa</span>
-      <a href="#approach">Our approach</a>
+    <div class="wrap hero-copy">
+      <h1 id="hero-title">How does a Korean cream end up on a shelf in Dubai?</h1>
+      <p>We do it for a living. Follow one product from the lab to the shelf, or <a href={url('/contact/')}>ask us about yours</a>.</p>
+      <a class="cue" href="#journey">Follow the product</a>
     </div>
+    <p class="hero-hint" aria-hidden="true">Move your cursor to look closer</p>
   </section>
 
-  <section class="section center" id="approach">
-    <div class="wrap">
-      <span class="eyebrow">Who we are</span>
-      <h2>We connect Korean makers<br />with <em>buyers who trust them.</em></h2>
-      <hr class="rule" />
-      <p class="lede">KNS Uncles is a business development partner for Korean beauty and healthcare companies. We give Middle East buyers direct access to Korean partners, with transparent sourcing and export support from the first inquiry to the first shipment.</p>
-    </div>
-  </section>
-
-  <section class="split">
-    <div class="photo light">
-      <Image src={serumCream} alt="Real Dew serum, cream and cleanser, a Korean skincare line" widths={[600, 1000, 1400]} sizes="(min-width: 52rem) 50vw, 100vw" />
-    </div>
-    <div class="split-text">
-      <span class="eyebrow">What it takes</span>
-      <h2>Understand the market.<br />Design the structure.<br />Commercialise.</h2>
-      <hr class="rule" />
-      <p class="muted">We check whether a product can realistically enter the target country before money is spent, choose the partners and commercial model that keep it sustainable, and manage registration and approvals through to the first orders.</p>
-    </div>
-  </section>
-
-  <section class="section quote-band center">
-    <div class="wrap">
-      <span class="eyebrow">Our view</span>
-      <blockquote>
-        <p>&ldquo;Good products alone don't open the Middle East. <em>Knowing the market does.</em>&rdquo;</p>
-      </blockquote>
-      <hr class="rule" />
-      <cite>The KNS Uncles approach</cite>
-    </div>
-  </section>
-
-  <section class="section center">
-    <div class="wrap">
-      <span class="eyebrow">How we work</span>
-      <h2>From market fit to signed deals</h2>
-      <ol class="columns">
-        {steps.map((s, i) => (
-          <li>
-            <span class="num">0{i + 1} /</span>
-            <h3><a href={url(`/services/${s.slug}/`)}>{s.title}</a></h3>
-            <p>{s.summary}</p>
+  <section class="journey" id="journey" aria-labelledby="journey-title" data-journey style={`--stops: ${stops.length + 1}`}>
+    <h2 id="journey-title" class="visually-hidden">From the lab to the shelf, in five questions</h2>
+    <div class="pin">
+      <ol class="track">
+        {stops.map((s, i) => (
+          <li class="stop">
+            <p class="stop-count"><span>{i + 1}/{stops.length + 1}</span> {s.place}</p>
+            <h3>{s.q}</h3>
+            <p class="stop-answer">{s.a}</p>
+            <a href={url(`/services/${s.service}/`)}>{svc[s.service].title}</a>
+            <p class="stop-next" aria-hidden="true"><span>Next</span>{stops[i + 1]?.q ?? 'And then?'}</p>
           </li>
         ))}
+        <li class="stop stop-last">
+          <div>
+            <p class="stop-count"><span>{stops.length + 1}/{stops.length + 1}</span> Shelf</p>
+            <h3>And then?</h3>
+            <p class="stop-answer">Registration, approvals, the first commercial order. Korean products we work with are on retail shelves in the UAE and shipping to Lebanon.</p>
+            <a class="btn btn-primary" href={url('/contact/')}>Start with your product</a>
+          </div>
+          <Image class="stop-photo" src={trio} alt="Korean cream, serum and cleanser" widths={[600, 1000]} sizes="(min-width: 60rem) 40vw, 100vw" />
+        </li>
       </ol>
-      <p class="muted" style="margin-top: 3rem;">For Middle East pharmaceutical companies we also run a <a href={url(`/services/${procurement.slug}/`)}>procurement service</a>, acting as their liaison office in Korea.</p>
+      <div class="progress" aria-hidden="true">
+        <span class="progress-fill"></span>
+        <span class="progress-ends"><span>Korea</span><span>Middle East shelf</span></span>
+      </div>
     </div>
   </section>
 
-  <section class="photo banner" aria-labelledby="lines-title">
-    <Image src={boxes} alt="" widths={[800, 1400, 2000]} sizes="100vw" style="object-position: 50% 55%;" />
-    <div class="wrap">
-      <h2 id="lines-title">Cosmetics and medical.<br /><em>One corridor.</em></h2>
+  <section class="section asked" aria-labelledby="asked-title">
+    <div class="wrap asked-grid">
+      <div>
+        <h2 id="asked-title">Questions people ask us first</h2>
+        <p class="muted">Open any of them. If yours isn't here, <a href={url('/contact/')}>ask it directly</a>.</p>
+      </div>
+      <div class="questions">
+        <details name="asked">
+          <summary>Do you only work with cosmetics?</summary>
+          <div class="answer"><p>No. We work across cosmetics and medical products, for example Barr Cosmetics Rice Barrier Gel Cleanser and BTS Medical BellKrea, and earn through distribution, OEM and joint development.</p></div>
+        </details>
+        <details name="asked">
+          <summary>We're a pharma company in the Middle East. Can you source medicines in Korea for us?</summary>
+          <div class="answer">
+            <p>Yes. We act as your liaison office in Korea, in four steps:</p>
+            <ol class="mini-steps">{svc.procurement.points.map((p) => <li>{p}</li>)}</ol>
+            <a href={url('/services/procurement/')}>Procurement service</a>
+          </div>
+        </details>
+        <details name="asked">
+          <summary>Who do you already work with?</summary>
+          <div class="answer"><p>{partners.join(', ')}.</p></div>
+        </details>
+        <details name="asked">
+          <summary>Who is behind KNS Uncles?</summary>
+          <div class="answer">
+            <ul class="people">{team.map((m) => <li><span>{m.name}</span> {m.role}</li>)}</ul>
+            <p>Thirteen years of taking Korean products and technology abroad, with backgrounds at KPMG, Dong-A ST, Samsung Bioepis, Yeolmae Company and Chungbuk National University.</p>
+          </div>
+        </details>
+        <details name="asked">
+          <summary>Which markets do you cover?</summary>
+          <div class="answer"><p>The GCC, the Levant and North Africa, from a base in Korea.</p></div>
+        </details>
+      </div>
     </div>
   </section>
 
-  <section class="section center cta-band">
+  <section class="section field-notes" aria-labelledby="notes-title">
     <div class="wrap">
-      <span class="eyebrow">Partners in the region</span>
-      <h2>Working alongside <em>trusted names.</em></h2>
-      <p class="partner-line">{partners.join(' / ')}</p>
+      <h2 id="notes-title">Field notes</h2>
+      <ul class="note-list">
+        {posts.map((post) => (
+          <li>
+            <a href={url(`/insights/${post.id}/`)}>
+              <span class="note-title">{post.data.title}</span>
+              <span class="note-desc">{post.data.description}</span>
+            </a>
+            {post.data.sample && <span class="badge">Sample</span>}
+          </li>
+        ))}
+      </ul>
+      <a href={url('/insights/')}>Read all insights</a>
+    </div>
+  </section>
+
+  <section class="closing" aria-labelledby="closing-title">
+    <div class="wrap">
+      <h2 id="closing-title">Tell us what you make. We'll tell you what it takes.</h2>
       <div class="actions">
         <a class="btn btn-primary" href={url('/contact/')}>Discuss a project</a>
-        <a class="btn btn-secondary" href={url('/services/')}>See our services</a>
+        <a class="closing-mail" href={`mailto:${company.email}`}>{company.email}</a>
       </div>
     </div>
   </section>
 </Base>
+
+<script>
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Spotlight: follows a fine pointer with a little lag; touch screens get a slow idle drift from CSS.
+  const stage = document.querySelector<HTMLElement>('[data-spotlight]');
+  const veil = stage?.querySelector<HTMLElement>('.veil');
+  if (stage && veil && !reduce && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    let tx = 50, ty = 45, x = 50, y = 45, raf = 0;
+    const tick = () => {
+      x += (tx - x) * 0.12;
+      y += (ty - y) * 0.12;
+      veil.style.setProperty('--x', `${x}%`);
+      veil.style.setProperty('--y', `${y}%`);
+      raf = Math.abs(tx - x) + Math.abs(ty - y) > 0.05 ? requestAnimationFrame(tick) : 0;
+    };
+    stage.parentElement!.addEventListener('pointermove', (e) => {
+      const r = stage.getBoundingClientRect();
+      tx = ((e.clientX - r.left) / r.width) * 100;
+      ty = ((e.clientY - r.top) / r.height) * 100;
+      veil.classList.add('tracking');
+      if (!raf) raf = requestAnimationFrame(tick);
+    });
+  }
+
+  // Journey: pinned horizontal scroll on wide screens; a plain vertical list everywhere else.
+  const journey = document.querySelector<HTMLElement>('[data-journey]');
+  const wide = matchMedia('(min-width: 60rem)');
+  if (journey && !reduce) {
+    const pin = journey.querySelector<HTMLElement>('.pin')!;
+    const track = journey.querySelector<HTMLElement>('.track')!;
+    const fill = journey.querySelector<HTMLElement>('.progress-fill')!;
+    const stopsEls = [...track.children] as HTMLElement[];
+    let queued = false;
+    const update = () => {
+      queued = false;
+      if (!journey.classList.contains('is-pinned')) return;
+      const r = journey.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, -r.top / (r.height - innerHeight)));
+      track.style.transform = `translateX(${-p * (track.scrollWidth - pin.clientWidth)}px)`;
+      fill.style.transform = `scaleX(${p})`;
+      const active = Math.round(p * (stopsEls.length - 1));
+      stopsEls.forEach((el, i) => el.classList.toggle('is-active', i === active));
+    };
+    const onScroll = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+    const setMode = () => { journey.classList.toggle('is-pinned', wide.matches); track.style.transform = ''; update(); };
+    // Keyboard focus inside an off-screen stop scrolls the page to that stop.
+    track.addEventListener('focusin', (e) => {
+      if (!journey.classList.contains('is-pinned')) return;
+      const i = stopsEls.findIndex((el) => el.contains(e.target as Node));
+      const top = journey.offsetTop + (i / (stopsEls.length - 1)) * (journey.offsetHeight - innerHeight);
+      scrollTo({ top, behavior: 'instant' });
+    });
+    wide.addEventListener('change', setMode);
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', onScroll);
+    setMode();
+  }
+
+  // Reveal blocks once as they enter the viewport.
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, { rootMargin: '0px 0px -12% 0px' });
+  document.querySelectorAll('.asked-grid, .note-list, .closing h2').forEach((el) => io.observe(el));
+</script>
