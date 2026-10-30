@@ -1,7 +1,6 @@
 // Source: [KNS Uncles] 소개자료_국문.pdf (2026-09). Edit company facts here, not in pages.
 export const company = {
   name: 'KNS Uncles',
-  tagline: 'Connecting Middle East markets with Korean beauty & healthcare',
   vision: 'To become the leading global business development partner for Korean beauty & healthcare.',
   email: 'contact@knsuncles.com',
   phone: '+82-10-9858-8385',
@@ -20,8 +19,6 @@ export const nav = [
   { href: '/insights/', label: 'Insights' },
   { href: '/contact/', label: 'Contact' },
 ];
-
-export const markets = ['GCC', 'Levant', 'North Africa'];
 
 export const services = [
   {

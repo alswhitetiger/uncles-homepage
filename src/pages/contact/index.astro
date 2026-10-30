@@ -8,7 +8,7 @@ import { company } from '../../data/site';
       <h1>Contact us</h1>
       <p class="lede">Tell us about your product or sourcing need. You can also email <a href={`mailto:${company.email}`}>{company.email}</a> or call <a href={company.phoneHref}>{company.phone}</a>.</p>
 
-      <!-- shortcut: GitHub Pages can't receive form posts, so the form opens the visitor's email app; switch to a form service (e.g. Formspree) for in-page sending. -->
+      <!-- shortcut: GitHub Pages can't receive form posts, so the form opens the visitor's email app (mailto URLs break past ~2,000 chars, hence maxlength); switch to a form service (e.g. Formspree) for in-page sending. -->
       <form class="form" id="contact-form" action={`mailto:${company.email}`} data-email={company.email}>
 
         <div class="field">
@@ -41,7 +41,7 @@ import { company } from '../../data/site';
         <div class="field">
           <label for="message">Message</label>
           <span class="hint" id="message-hint">Product, target country and timeline help us reply with specifics.</span>
-          <textarea id="message" name="message" aria-describedby="message-hint" required></textarea>
+          <textarea id="message" name="message" aria-describedby="message-hint" maxlength="1000" required></textarea>
         </div>
         <button class="btn btn-primary" type="submit">Write the email</button>
         <p class="hint">This opens your email app with your message filled in, ready to send to {company.email}.</p>
