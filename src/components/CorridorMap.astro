@@ -1,0 +1,67 @@
+---
+// Rendered at build time: the page ships a plain SVG, no map JavaScript.
+import { geoMercator, geoPath } from 'd3-geo';
+import { feature } from 'topojson-client';
+import world from 'world-atlas/countries-110m.json';
+
+const W = 1200;
+const H = 470;
+// ISO 3166 numeric codes. Bahrain is too small for the 110m dataset.
+const regions: Record<string, string[]> = {
+  gcc: ['682', '784', '634', '414', '512'],
+  levant: ['422', '400', '760'],
+  africa: ['818', '434', '788', '012', '504'],
+  korea: ['410'],
+};
+const regionOf = (id: string) => Object.keys(regions).find((r) => regions[r].includes(id)) ?? '';
+
+const countries = (feature(world as any, (world as any).objects.countries) as any).features;
+const frame = { type: 'MultiPoint', coordinates: [[-14, 7], [134, 46]] } as any;
+const projection = geoMercator().fitExtent([[0, 0], [W, H]], frame);
+const path = geoPath(projection);
+const land = countries.map((c: any) => ({ d: path(c), region: regionOf(String(c.id)) })).filter((c: any) => c.d);
+
+const at = (lon: number, lat: number) => projection([lon, lat]) as [number, number];
+const seoul = at(126.98, 37.57);
+const routes = [
+  { to: at(55.27, 25.2) },  // Dubai
+  { to: at(35.5, 33.89) },  // Beirut
+  { to: at(31.24, 30.04) }, // Cairo
+].map(({ to }) => {
+  const [x1, y1] = seoul;
+  const [x2, y2] = to;
+  const lift = Math.abs(x1 - x2) * 0.28;
+  return `M${x1.toFixed(1)} ${y1.toFixed(1)} Q${((x1 + x2) / 2).toFixed(1)} ${(Math.min(y1, y2) - lift).toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}`;
+});
+
+const pins = [
+  { name: 'Korea', note: 'Makers, labs, buyer meetings', xy: seoul, anchor: 'end', dx: -14 },
+  { name: 'UAE', note: 'Products on retail shelves', xy: at(55.27, 25.2), anchor: 'start', dx: 14 },
+  { name: 'Lebanon', note: 'Shipments delivered', xy: at(35.5, 33.89), anchor: 'end', dx: -14 },
+];
+const areaLabels = [
+  { text: 'GCC', xy: at(47, 20) },
+  { text: 'Levant', xy: at(39.5, 37.5) },
+  { text: 'North Africa', xy: at(8, 25) },
+];
+---
+<figure class="corridor">
+  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="map-title map-desc">
+    <title id="map-title">The KNS Uncles corridor</title>
+    <desc id="map-desc">Map of routes from Korea to the GCC, the Levant and North Africa. Marked: Korea, where we work with makers and meet buyers; the UAE, where products are on retail shelves; Lebanon, where shipments are delivered.</desc>
+    <g class="land">
+      {land.map((c: any) => <path d={c.d} class={c.region || undefined} />)}
+    </g>
+    <g class="routes">
+      {routes.map((d) => <path d={d} pathLength="1" />)}
+    </g>
+    {areaLabels.map((l) => <text class="area" x={l.xy[0]} y={l.xy[1]} text-anchor="middle">{l.text}</text>)}
+    {pins.map((p) => (
+      <g class="pin">
+        <circle cx={p.xy[0]} cy={p.xy[1]} r="6" />
+        <text x={p.xy[0] + p.dx} y={p.xy[1] - 4} text-anchor={p.anchor}>{p.name}</text>
+        <text class="note" x={p.xy[0] + p.dx} y={p.xy[1] + 16} text-anchor={p.anchor}>{p.note}</text>
+      </g>
+    ))}
+  </svg>
+</figure>

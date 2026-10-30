@@ -1,90 +1,122 @@
 ---
 import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import { company, services, partners, url } from '../data/site';
-import trio from '../assets/photos/realdew-trio.jpg';
+import CorridorMap from '../components/CorridorMap.astro';
+import { company, services, partners, team, url } from '../data/site';
 import serumCream from '../assets/photos/realdew-serum-cream.jpg';
-import boxes from '../assets/photos/realdew-boxes.jpg';
-const steps = services.filter((s) => !s.sequence);
+
+const consulting = services.filter((s) => !s.sequence);
 const procurement = services.find((s) => s.sequence)!;
+const posts = (await getCollection('insights')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()).slice(0, 2);
+const fmt = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
-<Base title={company.name} overlayHeader description="KNS Uncles helps Korean beauty and healthcare companies enter GCC, Levant and North African markets, from market fit to signed distribution.">
-  <section class="photo hero" aria-labelledby="hero-title">
-    <Image src={trio} alt="" widths={[800, 1400, 2000]} sizes="100vw" loading="eager" fetchpriority="high" style="object-position: 50% 62%;" />
-    <div class="hero-inner">
-      <span class="eyebrow">Korean beauty &amp; healthcare for the Middle East</span>
-      <h1 id="hero-title">Korean beauty,<br /><em>carried further.</em></h1>
+<Base title={company.name} description="KNS Uncles brings Korean beauty and healthcare products to buyers in the GCC, the Levant and North Africa: market fit, distributors, contracts and shipment.">
+  <section class="opening" aria-labelledby="opening-title">
+    <div class="wrap opening-grid">
+      <h1 id="opening-title">From Korean labs to Middle East shelves.</h1>
+      <div class="opening-side">
+        <p>KNS Uncles is the business development partner for Korean beauty and healthcare companies in the GCC, the Levant and North Africa. We check market fit, find the distributor, structure the deal and run it through to shipment.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href={url('/contact/')}>Discuss a project</a>
+          <a class="btn btn-quiet" href="#services">How we work</a>
+        </div>
+      </div>
     </div>
-    <div class="hero-foot">
-      <span>Korea to the GCC, Levant &amp; North Africa</span>
-      <a href="#approach">Our approach</a>
-    </div>
-  </section>
-
-  <section class="section center" id="approach">
     <div class="wrap">
-      <span class="eyebrow">Who we are</span>
-      <h2>We connect Korean makers<br />with <em>buyers who trust them.</em></h2>
-      <hr class="rule" />
-      <p class="lede">KNS Uncles is a business development partner for Korean beauty and healthcare companies. We give Middle East buyers direct access to Korean partners, with transparent sourcing and export support from the first inquiry to the first shipment.</p>
+      <CorridorMap />
+      <ul class="map-notes">
+        <li><strong>Korea</strong> Makers, labs, buyer meetings</li>
+        <li><strong>UAE</strong> Products on retail shelves</li>
+        <li><strong>Lebanon</strong> Shipments delivered</li>
+      </ul>
     </div>
   </section>
 
-  <section class="split">
-    <div class="photo light">
-      <Image src={serumCream} alt="Real Dew serum, cream and cleanser, a Korean skincare line" widths={[600, 1000, 1400]} sizes="(min-width: 52rem) 50vw, 100vw" />
-    </div>
-    <div class="split-text">
-      <span class="eyebrow">What it takes</span>
-      <h2>Understand the market.<br />Design the structure.<br />Commercialise.</h2>
-      <hr class="rule" />
-      <p class="muted">We check whether a product can realistically enter the target country before money is spent, choose the partners and commercial model that keep it sustainable, and manage registration and approvals through to the first orders.</p>
+  <section class="partners-band" aria-labelledby="partners-title">
+    <div class="wrap partners-inner">
+      <h2 id="partners-title">Partners on both ends of the route</h2>
+      <p class="partner-names">{partners.join(', ')}</p>
     </div>
   </section>
 
-  <section class="section quote-band center">
+  <section class="section" id="services" aria-labelledby="services-title">
     <div class="wrap">
-      <span class="eyebrow">Our view</span>
-      <blockquote>
-        <p>&ldquo;Good products alone don't open the Middle East. <em>Knowing the market does.</em>&rdquo;</p>
-      </blockquote>
-      <hr class="rule" />
-      <cite>The KNS Uncles approach</cite>
-    </div>
-  </section>
-
-  <section class="section center">
-    <div class="wrap">
-      <span class="eyebrow">How we work</span>
-      <h2>From market fit to signed deals</h2>
-      <ol class="columns">
-        {steps.map((s, i) => (
-          <li>
-            <span class="num">0{i + 1} /</span>
+      <h2 id="services-title">Good products alone don't open the Middle East</h2>
+      <p class="lede">A buyer in the Gulf or the Levant needs registration, a distributor who will invest, and a contract that holds. That is the work.</p>
+      <div class="ledger">
+        {consulting.map((s) => (
+          <article class="ledger-row">
             <h3><a href={url(`/services/${s.slug}/`)}>{s.title}</a></h3>
             <p>{s.summary}</p>
+            <ul>{s.points.map((p) => <li>{p}</li>)}</ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="feature" aria-labelledby="feature-title">
+    <div class="feature-photo">
+      <Image src={serumCream} alt="Real Dew camellia serum, cream and cleanser from Korea" widths={[700, 1100, 1500]} sizes="(min-width: 60rem) 50vw, 100vw" />
+    </div>
+    <div class="feature-text">
+      <h2 id="feature-title">Cosmetics and medical, sold through partners who stay</h2>
+      <p>We work across two lines and earn through distribution, OEM and joint development.</p>
+      <dl>
+        <dt>Cosmetics</dt>
+        <dd>Korean skincare for Middle East retail, such as Barr Cosmetics Rice Barrier Gel Cleanser and the Real Dew camellia line.</dd>
+        <dt>Medical</dt>
+        <dd>Medical and pharmaceutical products from Korean makers and research partners, such as BTS Medical BellKrea.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section procurement" aria-labelledby="procurement-title">
+    <div class="wrap">
+      <h2 id="procurement-title">Sourcing from Korea for Middle East pharma</h2>
+      <p class="lede">{procurement.summary}</p>
+      <ol class="route-steps">
+        {procurement.points.map((p) => <li>{p}</li>)}
+      </ol>
+      <a href={url(`/services/${procurement.slug}/`)}>How procurement works</a>
+    </div>
+  </section>
+
+  <section class="section people" aria-labelledby="team-title">
+    <div class="wrap people-grid">
+      <div>
+        <h2 id="team-title">Thirteen years of taking Korean products abroad</h2>
+        <p>Backgrounds at KPMG, Dong-A ST, Samsung Bioepis, Yeolmae Company and Chungbuk National University, with a team for technology transfer, export and approvals.</p>
+        <a href={url('/about/')}>Meet the team</a>
+      </div>
+      <ul class="names">
+        {team.map((m) => <li><span class="name">{m.name}</span><span class="role">{m.role}</span></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section notes" aria-labelledby="insights-title">
+    <div class="wrap">
+      <h2 id="insights-title">Notes from the corridor</h2>
+      <ul class="note-list">
+        {posts.map((post) => (
+          <li>
+            <a href={url(`/insights/${post.id}/`)}>{post.data.title}</a>
+            <span class="meta"><time datetime={post.data.pubDate.toISOString()}>{fmt(post.data.pubDate)}</time>{post.data.market && `, ${post.data.market}`}{post.data.sample && <span class="badge">Sample</span>}</span>
           </li>
         ))}
-      </ol>
-      <p class="muted" style="margin-top: 3rem;">For Middle East pharmaceutical companies we also run a <a href={url(`/services/${procurement.slug}/`)}>procurement service</a>, acting as their liaison office in Korea.</p>
+      </ul>
+      <a href={url('/insights/')}>All insights</a>
     </div>
   </section>
 
-  <section class="photo banner" aria-labelledby="lines-title">
-    <Image src={boxes} alt="" widths={[800, 1400, 2000]} sizes="100vw" style="object-position: 50% 55%;" />
-    <div class="wrap">
-      <h2 id="lines-title">Cosmetics and medical.<br /><em>One corridor.</em></h2>
-    </div>
-  </section>
-
-  <section class="section center cta-band">
-    <div class="wrap">
-      <span class="eyebrow">Partners in the region</span>
-      <h2>Working alongside <em>trusted names.</em></h2>
-      <p class="partner-line">{partners.join(' / ')}</p>
-      <div class="actions">
-        <a class="btn btn-primary" href={url('/contact/')}>Discuss a project</a>
-        <a class="btn btn-secondary" href={url('/services/')}>See our services</a>
+  <section class="closing" aria-labelledby="closing-title">
+    <div class="wrap closing-grid">
+      <h2 id="closing-title">Tell us what you make, or what you need to source.</h2>
+      <div>
+        <a class="btn btn-on-ink" href={url('/contact/')}>Discuss a project</a>
+        <p><a href={`mailto:${company.email}`}>{company.email}</a><br /><a href={company.phoneHref}>{company.phone}</a></p>
       </div>
     </div>
   </section>
