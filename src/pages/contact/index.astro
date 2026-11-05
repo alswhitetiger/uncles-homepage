@@ -48,6 +48,9 @@ import { company } from '../../data/site';
       </form>
       <script>
         const form = document.getElementById('contact-form') as HTMLFormElement;
+        // The header search sends its text here as ?q=; start the message with it.
+        const q = new URLSearchParams(location.search).get('q');
+        if (q) (form.elements.namedItem('message') as HTMLTextAreaElement).value = q;
         form.addEventListener('submit', (e) => {
           e.preventDefault();
           const d = new FormData(form);

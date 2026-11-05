@@ -1,10 +1,10 @@
 ---
 import '../styles/global.css';
 import Footer from '../components/Footer.astro';
-import { company, nav, url } from '../data/site';
+import { company, nav, services, url } from '../data/site';
 
-interface Props { title: string; description: string; noindex?: boolean; overlayHeader?: boolean }
-const { title, description, noindex = false, overlayHeader = false } = Astro.props;
+interface Props { title: string; description: string; noindex?: boolean }
+const { title, description, noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const fullTitle = title === company.name ? company.name : `${title} | ${company.name}`;
 const path = Astro.url.pathname;
@@ -24,27 +24,49 @@ const path = Astro.url.pathname;
     <meta property="og:type" content="website" />
     <link rel="icon" href={url('favicon.svg')} type="image/svg+xml" />
     <link rel="sitemap" href={url('sitemap-index.xml')} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
-    <header class:list={['site-header', { overlay: overlayHeader }]}>
-      <div class="wrap header-inner">
-        <a class="brand" href={url('/')}>{company.name}</a>
-        <nav aria-label="Main">
-          <ul>
-            {nav.map((item) => (
-              <li><a href={url(item.href)} aria-current={path.startsWith(url(item.href)) ? 'page' : undefined}>{item.label}</a></li>
-            ))}
-          </ul>
-        </nav>
+    <header class="site-header" id="top">
+      <div class="bar">
+        <a class="brand" href={url('/')}>KNS<span>uncles</span></a>
+        <p class="ship"><span>Serving buyers in</span><strong>GCC, Levant &amp; North Africa</strong></p>
+        <form class="find" id="find" action={url('/contact/')} role="search">
+          <label class="sr" for="find-cat">Service</label>
+          <select id="find-cat" name="service">
+            <option value="">All services</option>
+            {services.map((s) => <option value={url(`/services/${s.slug}/`)}>{s.title}</option>)}
+          </select>
+          <label class="sr" for="find-q">Product or market</label>
+          <input id="find-q" name="q" type="search" placeholder="Your product or target country, e.g. serum for Saudi Arabia" />
+          <button type="submit" aria-label="Go">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4" /><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /></svg>
+          </button>
+        </form>
+        <a class="bar-link" href={`mailto:${company.email}`}><span>Questions?</span><strong>Email us</strong></a>
+        <a class="bar-cta" href={url('/contact/')}>Start a project</a>
       </div>
+      <nav class="subbar" aria-label="Main">
+        <ul>
+          {nav.map((item) => (
+            <li><a href={url(item.href)} aria-current={path.startsWith(url(item.href)) ? 'page' : undefined}>{item.label}</a></li>
+          ))}
+          {services.map((s) => <li class="wide"><a href={url(`/services/${s.slug}/`)}>{s.title}</a></li>)}
+        </ul>
+      </nav>
     </header>
     <main id="main">
       <slot />
     </main>
+    <a class="to-top" href="#top">Back to top</a>
     <Footer />
+    <script>
+      // A chosen service opens its page; otherwise the text goes to the contact form as a starting message.
+      const form = document.getElementById('find') as HTMLFormElement;
+      form.addEventListener('submit', (e) => {
+        const service = (form.elements.namedItem('service') as HTMLSelectElement).value;
+        if (service) { e.preventDefault(); location.href = service; }
+      });
+    </script>
   </body>
 </html>
