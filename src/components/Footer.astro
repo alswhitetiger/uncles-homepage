@@ -6,6 +6,7 @@ import { company, whatsapp, footerLinks } from '../data/site';
 // Links whose label matches a key here show as an icon instead of text.
 const icons = {
   Instagram: '<rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/>',
+  WhatsApp: '<path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M3.6 20.4l1.2-4.3A8.6 8.6 0 1 1 8 19.3z"/><path fill="currentColor" d="M9.1 7.6c-.2-.4-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.3.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.9 4.5 3.9 2.2.9 2.7.7 3.1.6.5 0 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2l-.4-.3-1.7-.8c-.2-.1-.4-.1-.6.1l-.7.9c-.1.2-.3.2-.5.1-.3-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.3 0-.4.1-.5l.4-.5.3-.4v-.5z"/>',
   Facebook: '<path fill="currentColor" d="M13.5 21.5v-8h2.7l.4-3.2h-3.1V8.3c0-.9.3-1.6 1.6-1.6h1.7V3.9a22 22 0 0 0-2.5-.1c-2.5 0-4.2 1.5-4.2 4.3v2.2H7.3v3.2h2.8v8z"/>',
 };
 ---
@@ -16,7 +17,7 @@ const icons = {
     <div class="uf-mid">
       <ul>
         <li><a href={`mailto:${company.email}`}>{company.email}</a></li>
-        <li><a href={whatsapp.href}><span class="uf-tag">WhatsApp</span> {whatsapp.label}</a></li>
+        <li><a class="uf-wa" href={whatsapp.href} aria-label={`WhatsApp ${whatsapp.label}`} title="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={icons.WhatsApp} /><span>{whatsapp.label}</span></a></li>
       </ul>
       <ul>
         {footerLinks.map((l) => {
@@ -47,6 +48,8 @@ const icons = {
   .uf-icon { display: inline-grid; place-items: center; width: 2.25rem; height: 2.25rem; margin-block: -0.4rem; border: 1px solid rgb(247 244 238 / 0.4); border-radius: 50%; transition: background-color 0.2s, color 0.2s; }
   .uf-icon svg { width: 1.1rem; height: 1.1rem; }
   .uf-icon:hover { background: #f7f4ee; color: #4b4033; }
+  .uf-wa { display: inline-flex; align-items: center; gap: 0.45rem; }
+  .uf-wa svg { width: 1.15rem; height: 1.15rem; flex: none; color: #d6c3a0; }
   .uf-empty { color: rgb(247 244 238 / 0.55); border-bottom: 1px dashed rgb(247 244 238 / 0.35); cursor: help; }
   .uf-fine { color: #d6c3a0; }
   @media (min-width: 52rem) {
