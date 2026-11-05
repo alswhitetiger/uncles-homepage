@@ -208,3 +208,6 @@ button.btn { cursor: pointer; justify-self: start; }
   .hero h1 .l3 { animation-delay: 0.16s; }
 }
 @keyframes rise { from { opacity: 0; transform: translateY(0.18em); } }
+
+/* Shared footer colours: this design's own palette */
+.uf { --uf-bg: var(--bg-deep); --uf-fg: var(--ink); --uf-soft: var(--muted); --uf-line: var(--line); }
