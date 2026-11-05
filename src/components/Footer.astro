@@ -1,59 +1,70 @@
 ---
-// One footer for every design: walnut band, serif name left, contact and links centre, copyright right.
+// One footer for every design, in two tidy rows:
+// top = name left, contact centre, social icons right; bottom (after a hairline) = site links left, copyright right.
 // Styles are self-contained so it looks the same whatever page styles sit around it.
 import { company, whatsapp, footerLinks } from '../data/site';
 
-// Links whose label matches a key here show as an icon instead of text.
 const icons = {
-  Instagram: '<rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/>',
+  Mail: '<rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m3.5 6.5 8.5 7 8.5-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
   WhatsApp: '<path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M3.6 20.4l1.2-4.3A8.6 8.6 0 1 1 8 19.3z"/><path fill="currentColor" d="M9.1 7.6c-.2-.4-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.3.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.9 4.5 3.9 2.2.9 2.7.7 3.1.6.5 0 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2l-.4-.3-1.7-.8c-.2-.1-.4-.1-.6.1l-.7.9c-.1.2-.3.2-.5.1-.3-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.3 0-.4.1-.5l.4-.5.3-.4v-.5z"/>',
+  Instagram: '<rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/>',
   Facebook: '<path fill="currentColor" d="M13.5 21.5v-8h2.7l.4-3.2h-3.1V8.3c0-.9.3-1.6 1.6-1.6h1.7V3.9a22 22 0 0 0-2.5-.1c-2.5 0-4.2 1.5-4.2 4.3v2.2H7.3v3.2h2.8v8z"/>',
 };
+// Links with a matching icon go in the social row; the rest are text links in the bottom row.
+const social = footerLinks.filter((l) => l.href && l.label in icons);
+const sites = footerLinks.filter((l) => !(l.label in icons));
 ---
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400&family=Montserrat:wght@400&display=swap" />
 <footer class="uf">
   <div class="uf-inner">
-    <p class="uf-brand">{company.name}</p>
-    <div class="uf-mid">
-      <ul>
-        <li><a href={`mailto:${company.email}`}>{company.email}</a></li>
-        <li><a class="uf-wa" href={whatsapp.href} aria-label={`WhatsApp ${whatsapp.label}`} title="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={icons.WhatsApp} /><span>{whatsapp.label}</span></a></li>
+    <div class="uf-top">
+      <p class="uf-brand">{company.name}</p>
+      <ul class="uf-contact">
+        <li><a href={`mailto:${company.email}`}><svg viewBox="0 0 24 24" aria-hidden="true" set:html={icons.Mail} />{company.email}</a></li>
+        <li><a href={whatsapp.href} aria-label={`WhatsApp ${whatsapp.label}`} title="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={icons.WhatsApp} />{whatsapp.label}</a></li>
       </ul>
-      <ul>
-        {footerLinks.map((l) => {
-          const icon = icons[l.label as keyof typeof icons];
-          if (!l.href) return <li><span class="uf-empty" title="Link to come">{l.label}</span></li>;
-          return <li>{icon
-            ? <a class="uf-icon" href={l.href} aria-label={l.label} title={l.label}><svg viewBox="0 0 24 24" aria-hidden="true" set:html={icon} /></a>
-            : <a href={l.href}>{l.label}</a>}</li>;
-        })}
+      <ul class="uf-social">
+        {social.map((l) => (
+          <li><a class="uf-icon" href={l.href} aria-label={l.label} title={l.label}><svg viewBox="0 0 24 24" aria-hidden="true" set:html={icons[l.label as keyof typeof icons]} /></a></li>
+        ))}
       </ul>
     </div>
-    <p class="uf-fine">&copy; {new Date().getFullYear()} {company.name}</p>
+    <div class="uf-bottom">
+      <ul class="uf-sites">
+        {sites.map((l) => <li>{l.href ? <a href={l.href}>{l.label}</a> : <span class="uf-empty" title="Link to come">{l.label}</span>}</li>)}
+      </ul>
+      <p>&copy; {new Date().getFullYear()} {company.name}</p>
+    </div>
   </div>
 </footer>
 
 <style>
   .uf { background: #4b4033; color: #f7f4ee; font: 400 0.875rem/1.6 'Montserrat', system-ui, sans-serif; letter-spacing: 0; }
-  .uf-inner { width: min(70rem, 100% - 3rem); margin-inline: auto; padding-block: 2.5rem; display: grid; gap: 1.25rem; align-items: center; }
+  .uf-inner { width: min(70rem, 100% - 3rem); margin-inline: auto; padding-block: 2.5rem 1.75rem; }
   .uf p { margin: 0; max-width: none; }
-  .uf-brand { font: 400 1.35rem/1 'Cormorant Garamond', 'Times New Roman', serif; letter-spacing: 0.08em; }
-  .uf-mid { display: grid; gap: 0.6rem; }
-  .uf ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem 1.75rem; }
-  .uf a { color: #f7f4ee; text-decoration: underline; text-decoration-color: rgb(247 244 238 / 0.4); text-underline-offset: 0.25em; }
-  .uf a:hover { text-decoration-color: currentColor; }
-  .uf a:focus-visible { outline: 2px solid #f7f4ee; outline-offset: 4px; }
-  .uf-tag { color: #d6c3a0; }
-  .uf ul { align-items: center; }
-  .uf-icon { display: inline-grid; place-items: center; width: 2.25rem; height: 2.25rem; margin-block: -0.4rem; border: 1px solid rgb(247 244 238 / 0.4); border-radius: 50%; transition: background-color 0.2s, color 0.2s; }
+  .uf ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; }
+  .uf li { margin: 0; }
+  .uf a { color: inherit; text-decoration: none; }
+  .uf a:hover { text-decoration: underline; text-underline-offset: 0.25em; }
+  .uf a:focus-visible { outline: 2px solid #f7f4ee; outline-offset: 4px; border-radius: 2px; }
+
+  .uf-top { display: grid; gap: 1.25rem; align-items: center; }
+  .uf-brand { font: 400 1.5rem/1 'Cormorant Garamond', 'Times New Roman', serif; letter-spacing: 0.08em; }
+  .uf-contact { gap: 0.5rem 2.25rem; }
+  .uf-contact a { display: inline-flex; align-items: center; gap: 0.55rem; }
+  .uf-contact svg { width: 1.1rem; height: 1.1rem; flex: none; color: #d6c3a0; }
+  .uf-social { gap: 0.75rem; }
+  .uf-icon { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border: 1px solid rgb(247 244 238 / 0.4); border-radius: 50%; transition: background-color 0.2s, color 0.2s; }
   .uf-icon svg { width: 1.1rem; height: 1.1rem; }
   .uf-icon:hover { background: #f7f4ee; color: #4b4033; }
-  .uf-wa { display: inline-flex; align-items: center; gap: 0.45rem; }
-  .uf-wa svg { width: 1.15rem; height: 1.15rem; flex: none; color: #d6c3a0; }
+
+  .uf-bottom { margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid rgb(247 244 238 / 0.18); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem 2rem; font-size: 0.8125rem; color: #d6c3a0; }
+  .uf-sites { gap: 0.4rem 1.75rem; }
+  .uf-sites a { color: #f7f4ee; }
   .uf-empty { color: rgb(247 244 238 / 0.55); border-bottom: 1px dashed rgb(247 244 238 / 0.35); cursor: help; }
-  .uf-fine { color: #d6c3a0; }
+
   @media (min-width: 52rem) {
-    .uf-inner { grid-template-columns: auto 1fr auto; column-gap: 3rem; }
-    .uf ul { justify-content: center; }
+    .uf-top { grid-template-columns: 1fr auto 1fr; }
+    .uf-social { justify-self: end; }
   }
 </style>
