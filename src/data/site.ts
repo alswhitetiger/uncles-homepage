@@ -64,9 +64,10 @@ export const team = [
 // WhatsApp is also the phone line. Footer links: fill in href once the account or site exists; empty ones show as a placeholder.
 export const whatsapp = { label: '+82-10-9858-8385', href: 'https://wa.me/821098588385' };
 export const footerLinks = [
-  { label: 'Instagram', href: '' },
-  { label: 'Facebook', href: '' },
+  { label: 'Instagram', href: 'https://www.instagram.com/knsuncles/' },
+  // shortcut: example addresses until the Facebook page and sister sites exist; replace href (and label) then.
+  { label: 'Facebook', href: 'https://www.facebook.com/knsuncles' },
   { label: 'knsuncles.com', href: 'https://knsuncles.com' },
-  { label: 'Sister site 1', href: '' },
-  { label: 'Sister site 2', href: '' },
+  { label: 'Sister site 1', href: 'https://example.com/sister-site-1' },
+  { label: 'Sister site 2', href: 'https://example.com/sister-site-2' },
 ];
