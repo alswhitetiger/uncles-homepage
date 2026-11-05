@@ -9,116 +9,126 @@ import boxes from '../assets/photos/realdew-boxes.jpg';
 import binoculars from '../assets/photos/atmos-binoculars.jpg';
 import typewriter from '../assets/photos/atmos-typewriter.jpg';
 
-const posts = (await getCollection('insights')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()).slice(0, 2);
-const postPhotos = [typewriter, serumCream];
+const serviceArt = { 'market-entry': serumCream, 'deal-structuring': typewriter, execution: binoculars, procurement: boxes } as const;
+const procurement = services.find((s) => s.sequence)!;
+const stepArt = [typewriter, trio, binoculars, boxes];
+const posts = (await getCollection('insights')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const postArt = [typewriter, serumCream];
 const fmt = (d: Date) => d.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
 ---
 <Base title={company.name} description="KNS Uncles helps Korean beauty and healthcare companies enter GCC, Levant and North African markets, from market fit to signed distribution.">
-  <section class="hero" aria-labelledby="hero-title">
-    <div class="wrap">
-      <h1 id="hero-title"><span class="l1">Where Korean</span><span class="l2">beauty</span><span class="l3">moves.</span></h1>
-      <div class="hero-meta">
-        <p>From market fit<br />to signed deals.</p>
-        <p>KNS Uncles takes Korean beauty and healthcare companies into the GCC, the Levant and North Africa, and gives buyers there a direct line to Korean makers.</p>
+  <section class="billboard" aria-labelledby="hero-title">
+    <Image src={boxes} alt="" widths={[800, 1400, 2000]} sizes="100vw" loading="eager" fetchpriority="high" style="object-position: 50% 56%;" />
+    <div class="billboard-info">
+      <p class="kicker"><b>KNS</b> Business development</p>
+      <h1 id="hero-title">Korean beauty, carried further</h1>
+      <div class="billboard-meta">
+        <span class="match">13+ years abroad</span>
+        <span class="tag">GCC</span><span class="tag">Levant</span><span class="tag">North Africa</span>
+        <span>{partners.length} partners</span>
       </div>
-      <div class="photo hero-photo">
-        <Image src={trio} alt="Real Dew skincare bottles, one of the Korean lines we take to the region" widths={[800, 1400, 2000]} sizes="(min-width: 78rem) 76rem, 100vw" loading="eager" fetchpriority="high" style="object-position: 50% 74%;" />
-        <span class="caption">Korea / GCC, Levant, North Africa</span>
-      </div>
-      <div class="hero-foot label"><span>Business development partner</span><a href="#working-on">See the work</a></div>
-    </div>
-  </section>
-
-  <section class="section" id="working-on" aria-labelledby="working-title">
-    <div class="wrap">
-      <div class="label-row"><span>What we do now</span><a href={url('/services/')}>All services</a></div>
-      <h2 id="working-title">What we're<br /><em>working on.</em></h2>
-      <div class="rows" style="margin-top: clamp(2.5rem, 5vw, 4rem);">
-        <article class="row">
-          <div class="photo"><Image src={serumCream} alt="" widths={[600, 1000, 1400]} sizes="(min-width: 52rem) 58vw, 100vw" /><span class="caption">Cosmetics / Gulf retail</span></div>
-          <div class="row-text">
-            <h3>Korean skincare on Gulf shelves.</h3>
-            <p>We check whether a line can sell before money is spent, then find the distributor who should sell it and set up the deal so it still works in year three.</p>
-            <div class="label-row"><span>Market entry</span><a href={url('/services/market-entry/')}>How it works</a></div>
-          </div>
-        </article>
-        <article class="row">
-          <div class="photo"><Image src={boxes} alt="" widths={[600, 1000, 1400]} sizes="(min-width: 52rem) 58vw, 100vw" style="object-position: 50% 55%;" /><span class="caption">Medical / Sourcing</span></div>
-          <div class="row-text">
-            <h3>Korean medicines, sourced for the region.</h3>
-            <p>For Middle East pharmaceutical companies we act as the liaison office in Korea: inquiry, contract, sourcing and production, managed from Seoul.</p>
-            <div class="label-row"><span>Procurement</span><a href={url('/services/procurement/')}>How it works</a></div>
-          </div>
-        </article>
-        <article class="row">
-          <div class="photo"><Image src={binoculars} alt="" widths={[600, 1000, 1400]} sizes="(min-width: 52rem) 58vw, 100vw" /><span class="caption">Partners / On the ground</span></div>
-          <div class="row-text">
-            <h3>Partners who know the ground.</h3>
-            <p>Distributors and pharma groups across the region, from {partners[0]} to {partners[partners.length - 1]}, who tell us what will sell before we bring it.</p>
-            <div class="label-row"><span>{partners.length} partners</span><a href={url('/partners/')}>See partners</a></div>
-          </div>
-        </article>
+      <p>We take Korean beauty and healthcare companies into Middle East markets, and give buyers there a direct line to Korean makers.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href={url('/contact/')}>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 4.5v15l12-7.5z" /></svg>
+          Start a project
+        </a>
+        <a class="btn" href={url('/about/')}>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2" /><path fill="currentColor" d="M11 10.5h2V17h-2zM11 7h2v2h-2z" /></svg>
+          More about us
+        </a>
       </div>
     </div>
   </section>
 
-  <section class="section light" aria-labelledby="roles-title">
-    <div class="wrap">
-      <div class="label-row"><span>Our approach</span><span>Four roles</span></div>
-      <h2 id="roles-title">Not defined<br />by a <strong>product.</strong></h2>
-      <p class="muted">Defined by the role we take between Korean makers and Middle East buyers.</p>
-      <ol class="roles">
-        {services.map((s) => (
-          <li><h3><a href={url(`/services/${s.slug}/`)}>{s.title}</a></h3><p>{s.summary}</p></li>
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  <section class="section place" aria-labelledby="place-title">
-    <div class="wrap">
-      <div class="label-row"><span>Where we work</span><span>Seoul to the region</span></div>
-      <h2 id="place-title"><span>SEOUL.</span><em>And beyond.</em></h2>
-      <div class="place-meta">
-        <p>A Korean base.<br />A Middle East outlook.</p>
-        <ul><li>GCC</li><li>Levant</li><li>North Africa</li></ul>
+  <div class="rows">
+    <section class="row" aria-labelledby="row-services">
+      <div class="row-head"><h2 id="row-services">Our services</h2><a href={url('/services/')}>Explore all</a></div>
+      <div class="row-body">
+        <ul class="track">
+          {services.map((s) => (
+            <li>
+              <a class="tile" href={url(`/services/${s.slug}/`)}>
+                <div class="art"><Image src={serviceArt[s.slug as keyof typeof serviceArt]} alt="" widths={[400, 700]} sizes="20rem" /><span class="title">{s.title}</span></div>
+                <div class="details"><p>{s.summary}</p><p class="tags">{s.points.slice(0, 3).join(', ')}</p></div>
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="section light taupe" aria-labelledby="about-title">
-    <div class="wrap">
-      <div class="label-row"><span>About us</span><a href={url('/about/')}>Our team</a></div>
-      <div class="statement">
-        <span class="label">KNS Uncles</span>
-        <div>
-          <h2 id="about-title">We work where good Korean products meet the realities of Middle East markets.</h2>
-          <p>A Seoul team with more than 13 years of taking Korean products and technology abroad, with backgrounds at KPMG, Dong-A ST and Samsung Bioepis.</p>
-        </div>
+    <section class="row" aria-labelledby="row-steps">
+      <div class="row-head"><h2 id="row-steps">Procurement, step by step</h2><a href={url(`/services/${procurement.slug}/`)}>How it works</a></div>
+      <div class="row-body">
+        <ol class="track steps-row">
+          {procurement.points.map((p, i) => (
+            <li>
+              <span class="step-num" aria-hidden="true">{i + 1}</span>
+              <div class="step-card"><Image src={stepArt[i]} alt="" widths={[300]} sizes="9rem" /><span>{p}</span></div>
+            </li>
+          ))}
+        </ol>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="section" aria-labelledby="journal-title">
-    <div class="wrap">
-      <div class="label-row"><span>Insights</span><a href={url('/insights/')}>All notes</a></div>
-      <h2 id="journal-title">The work<br /><em>continues.</em></h2>
-      <ul class="cards" style="margin-top: clamp(2.5rem, 5vw, 4rem);">
-        {posts.map((post, i) => (
+    <section class="row" aria-labelledby="row-partners">
+      <div class="row-head"><h2 id="row-partners">Partners in the region</h2><a href={url('/partners/')}>See all</a></div>
+      <div class="row-body">
+        <ul class="track">
+          {partners.map((name) => (
+            <li><a class="tile text" href={url('/partners/')}><div class="art"><span class="name">{name}</span></div></a></li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="row" aria-labelledby="row-insights">
+      <div class="row-head"><h2 id="row-insights">New notes from the field</h2><a href={url('/insights/')}>All notes</a></div>
+      <div class="row-body">
+        <ul class="track">
+          {posts.map((post, i) => (
+            <li>
+              <a class="tile" href={url(`/insights/${post.id}/`)}>
+                <div class="art"><Image src={postArt[i % postArt.length]} alt="" widths={[400, 700]} sizes="20rem" /><span class="badge-n">New</span><span class="title">{post.data.title}</span></div>
+                <div class="details"><p>{post.data.description}</p><p class="tags">{fmt(post.data.pubDate)}{post.data.market && `, ${post.data.market}`}</p></div>
+              </a>
+            </li>
+          ))}
           <li>
-            <div class="photo"><Image src={postPhotos[i]} alt="" widths={[500, 900]} sizes="(min-width: 52rem) 33vw, 100vw" /></div>
-            <span class="label">{fmt(post.data.pubDate)}{post.data.market && ` / ${post.data.market}`}</span>
-            <h3><a href={url(`/insights/${post.id}/`)}>{post.data.title}</a></h3>
-            <p>{post.data.description}</p>
+            <a class="tile" href={url('/contact/')}>
+              <div class="art"><Image src={trio} alt="" widths={[400, 700]} sizes="20rem" style="object-position: 50% 78%;" /><span class="title">Your product next?</span></div>
+              <div class="details"><p>Tell us the product, the target country and the timeline. We reply with specifics.</p><p class="tags">Contact</p></div>
+            </a>
           </li>
-        ))}
-        <li>
-          <div class="photo"><Image src={trio} alt="" widths={[500, 900]} sizes="(min-width: 52rem) 33vw, 100vw" style="object-position: 50% 80%;" /></div>
-          <span class="label">Contact</span>
-          <h3><a href={url('/contact/')}>Bring us a product, or a sourcing need.</a></h3>
-          <p>Tell us the product, the target country and the timeline. We reply with specifics.</p>
-        </li>
-      </ul>
-    </div>
-  </section>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Add previous / next buttons to each row; the track itself still scrolls by touch, trackpad and Tab.
+    for (const body of document.querySelectorAll<HTMLElement>('.row-body')) {
+      const track = body.querySelector<HTMLElement>('.track')!;
+      const make = (dir: 'prev' | 'next') => {
+        const b = document.createElement('button');
+        b.className = `scroll-btn ${dir}`;
+        b.type = 'button';
+        b.setAttribute('aria-label', dir === 'prev' ? 'Scroll row left' : 'Scroll row right');
+        b.textContent = dir === 'prev' ? '‹' : '›';
+        b.addEventListener('click', () => track.scrollBy({ left: (dir === 'prev' ? -1 : 1) * track.clientWidth * 0.85, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }));
+        body.append(b);
+        return b;
+      };
+      const prev = make('prev');
+      const next = make('next');
+      const update = () => {
+        prev.disabled = track.scrollLeft < 8;
+        next.disabled = track.scrollLeft + track.clientWidth > track.scrollWidth - 8;
+      };
+      track.addEventListener('scroll', update, { passive: true });
+      addEventListener('resize', update);
+      update();
+    }
+  </script>
 </Base>
