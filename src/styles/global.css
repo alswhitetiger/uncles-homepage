@@ -187,3 +187,6 @@ input, select, textarea { font: inherit; color: var(--ink); background: var(--wh
 textarea { min-height: 9rem; resize: vertical; }
 input:focus-visible, select:focus-visible, textarea:focus-visible { outline: none; border-color: var(--focus); box-shadow: 0 0 0 3px #c8f3fa; }
 button.btn { justify-self: start; }
+
+/* Shared footer colours: this design's own palette */
+.uf { --uf-bg: var(--navy-800); --uf-fg: var(--white); --uf-soft: var(--grey-300); --uf-line: var(--navy-700); }
