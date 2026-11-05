@@ -60,3 +60,13 @@ export const team = [
   { name: 'Kyuhong Lee', role: 'Chief Brand Manager' },
   { name: 'Ayman Turk', role: 'Chief Technology Officer' },
 ];
+
+// WhatsApp is also the phone line. Footer links: fill in href once the account or site exists; empty ones show as a placeholder.
+export const whatsapp = { label: '+82-10-9858-8385', href: 'https://wa.me/821098588385' };
+export const footerLinks = [
+  { label: 'Instagram', href: '' },
+  { label: 'Facebook', href: '' },
+  { label: 'knsuncles.com', href: 'https://knsuncles.com' },
+  { label: 'Sister site 1', href: '' },
+  { label: 'Sister site 2', href: '' },
+];
