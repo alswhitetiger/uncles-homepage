@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Footer from '../components/Footer.astro';
 import { company, nav, url } from '../data/site';
 
 interface Props { title: string; description: string; noindex?: boolean }
@@ -46,18 +47,7 @@ const path = Astro.url.pathname;
     <main id="main">
       <slot />
     </main>
-    <footer class="site-footer">
-      <div class="wrap">
-        <p>Questions? Email <a href={`mailto:${company.email}`}>{company.email}</a> or call <a href={company.phoneHref}>{company.phone}</a></p>
-        <ul class="footer-links">
-          {nav.map((item) => <li><a href={url(item.href)}>{item.label}</a></li>)}
-          <li><a href={url('/services/procurement/')}>Procurement</a></li>
-          <li><a href={url('/sitemap-index.xml')}>Sitemap</a></li>
-          {company.social.map((s) => <li><a href={s.href}>{s.label}</a></li>)}
-        </ul>
-        <p class="fine">&copy; {new Date().getFullYear()} {company.name}, Seoul</p>
-      </div>
-    </footer>
+    <Footer />
     <script>
       // Header turns solid once the page scrolls past the top.
       const header = document.querySelector('.site-header')!;

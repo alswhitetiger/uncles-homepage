@@ -1,0 +1,42 @@
+---
+// One footer for every design: walnut band, serif name left, contact and links centre, copyright right.
+// Styles are self-contained so it looks the same whatever page styles sit around it.
+import { company, whatsapp, footerLinks } from '../data/site';
+---
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400&family=Montserrat:wght@400&display=swap" />
+<footer class="uf">
+  <div class="uf-inner">
+    <p class="uf-brand">{company.name}</p>
+    <div class="uf-mid">
+      <ul>
+        <li><a href={`mailto:${company.email}`}>{company.email}</a></li>
+        <li><a href={whatsapp.href}><span class="uf-tag">WhatsApp</span> {whatsapp.label}</a></li>
+      </ul>
+      <ul>
+        {footerLinks.map((l) => (
+          <li>{l.href ? <a href={l.href}>{l.label}</a> : <span class="uf-empty" title="Link to come">{l.label}</span>}</li>
+        ))}
+      </ul>
+    </div>
+    <p class="uf-fine">&copy; {new Date().getFullYear()} {company.name}</p>
+  </div>
+</footer>
+
+<style>
+  .uf { background: #4b4033; color: #f7f4ee; font: 400 0.875rem/1.6 'Montserrat', system-ui, sans-serif; letter-spacing: 0; }
+  .uf-inner { width: min(70rem, 100% - 3rem); margin-inline: auto; padding-block: 2.5rem; display: grid; gap: 1.25rem; align-items: center; }
+  .uf p { margin: 0; max-width: none; }
+  .uf-brand { font: 400 1.35rem/1 'Cormorant Garamond', 'Times New Roman', serif; letter-spacing: 0.08em; }
+  .uf-mid { display: grid; gap: 0.6rem; }
+  .uf ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem 1.75rem; }
+  .uf a { color: #f7f4ee; text-decoration: underline; text-decoration-color: rgb(247 244 238 / 0.4); text-underline-offset: 0.25em; }
+  .uf a:hover { text-decoration-color: currentColor; }
+  .uf a:focus-visible { outline: 2px solid #f7f4ee; outline-offset: 4px; }
+  .uf-tag { color: #d6c3a0; }
+  .uf-empty { color: rgb(247 244 238 / 0.55); border-bottom: 1px dashed rgb(247 244 238 / 0.35); cursor: help; }
+  .uf-fine { color: #d6c3a0; }
+  @media (min-width: 52rem) {
+    .uf-inner { grid-template-columns: auto 1fr auto; column-gap: 3rem; }
+    .uf ul { justify-content: center; }
+  }
+</style>
