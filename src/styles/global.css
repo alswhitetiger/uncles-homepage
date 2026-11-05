@@ -196,3 +196,6 @@ button.btn { justify-self: start; }
   .tile:hover, .tile:focus-visible { transform: none; }
   .track { scroll-behavior: auto; }
 }
+
+/* Shared footer colours: this design's own palette */
+.uf { --uf-bg: var(--bg); --uf-fg: var(--muted); --uf-soft: var(--muted); --uf-line: var(--line); --uf-ring: var(--line); }
