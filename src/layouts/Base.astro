@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Footer from '../components/Footer.astro';
 import { company, nav, url } from '../data/site';
 
 interface Props { title: string; description: string; noindex?: boolean; overlayHeader?: boolean }
@@ -44,16 +45,6 @@ const path = Astro.url.pathname;
     <main id="main">
       <slot />
     </main>
-    <footer class="site-footer">
-      <div class="wrap footer-inner">
-        <p class="brand">{company.name}</p>
-        <ul class="footer-links">
-          <li><a href={`mailto:${company.email}`}>{company.email}</a></li>
-          <li><a href={company.phoneHref}>{company.phone}</a></li>
-          {company.social.map((s) => <li><a href={s.href}>{s.label}</a></li>)}
-        </ul>
-        <p class="fine">&copy; {new Date().getFullYear()} {company.name}</p>
-      </div>
-    </footer>
+    <Footer />
   </body>
 </html>
