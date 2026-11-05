@@ -286,3 +286,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px
 @media (max-width: 47.99rem) {
   .chapter.poster, .chapter.contact, .chapter.people { min-height: 0; }
 }
+
+/* Shared footer colours: this design's own palette */
+.uf { --uf-bg: var(--bg); --uf-fg: var(--ink); --uf-soft: var(--muted); }
