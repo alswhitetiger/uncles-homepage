@@ -2,8 +2,8 @@
 import '../styles/global.css';
 import { company, nav, url } from '../data/site';
 
-interface Props { title: string; description: string; noindex?: boolean; overlayHeader?: boolean }
-const { title, description, noindex = false, overlayHeader = false } = Astro.props;
+interface Props { title: string; description: string; noindex?: boolean }
+const { title, description, noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const fullTitle = title === company.name ? company.name : `${title} | ${company.name}`;
 const path = Astro.url.pathname;
@@ -25,13 +25,13 @@ const path = Astro.url.pathname;
     <link rel="sitemap" href={url('sitemap-index.xml')} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;0,800;1,300;1,500&display=swap" rel="stylesheet" />
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
-    <header class:list={['site-header', { overlay: overlayHeader }]}>
+    <header class="site-header">
       <div class="wrap header-inner">
-        <a class="brand" href={url('/')}>{company.name}</a>
+        <a class="brand-block" href={url('/')}><span class="brand">KNS<br />Uncles</span><span class="brand-note" aria-hidden="true">Korean beauty &amp; healthcare<br />for the Middle East</span></a>
         <nav aria-label="Main">
           <ul>
             {nav.map((item) => (
@@ -45,14 +45,18 @@ const path = Astro.url.pathname;
       <slot />
     </main>
     <footer class="site-footer">
-      <div class="wrap footer-inner">
-        <p class="brand">{company.name}</p>
-        <ul class="footer-links">
-          <li><a href={`mailto:${company.email}`}>{company.email}</a></li>
-          <li><a href={company.phoneHref}>{company.phone}</a></li>
-          {company.social.map((s) => <li><a href={s.href}>{s.label}</a></li>)}
-        </ul>
-        <p class="fine">&copy; {new Date().getFullYear()} {company.name}</p>
+      <div class="wrap">
+        <p class="wordmark" aria-hidden="true">KNS<br />Uncles</p>
+        <div class="footer-inner">
+          <p>Korean makers. Middle East buyers.<br />One team between them.</p>
+          <ul class="footer-links">
+            <li>Seoul, Republic of Korea</li>
+            <li><a href={`mailto:${company.email}`}>{company.email}</a></li>
+            <li><a href={company.phoneHref}>{company.phone}</a></li>
+            {company.social.map((s) => <li><a href={s.href}>{s.label}</a></li>)}
+          </ul>
+        </div>
+        <p class="fine"><span>&copy; {new Date().getFullYear()} {company.name}</span><a href="#main">Back to top</a></p>
       </div>
     </footer>
   </body>
