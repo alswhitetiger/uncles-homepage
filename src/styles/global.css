@@ -255,3 +255,6 @@ input, select, textarea { font: inherit; color: var(--color-ink); background: va
 textarea { min-height: 9rem; resize: vertical; }
 input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 1px; }
 .hidden { position: absolute; left: -9999px; }
+
+/* Shared footer colours: this design's own palette */
+.uf { --uf-bg: var(--color-ink); --uf-fg: var(--color-on-ink); --uf-soft: var(--color-on-ink-soft); --uf-focus: var(--color-focus-on-ink); }
