@@ -269,3 +269,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
   .journey.is-pinned .stop.is-active .stop-next { opacity: 0.55; }
   .stop-next span { display: block; font: 600 var(--text-sm)/1.4 var(--font-body); color: var(--color-detail); margin-bottom: 0.5rem; }
 }
+
+/* Shared footer colours: this design's own palette */
+.uf { --uf-bg: var(--color-bg); --uf-fg: var(--color-text); --uf-soft: var(--color-accent); --uf-line: var(--color-rule); --uf-top: 1px solid var(--color-rule); }
